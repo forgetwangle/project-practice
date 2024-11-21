@@ -16,16 +16,17 @@ import lombok.Data;
 
 @Data
 @Entity
+@Table(name="chargingSuccess")
 public class ChargingSuccess {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
 	@Column
-	private String backendSuccessRate;
+	private double backendSuccessRate;
 
 	@Temporal(TemporalType.TIMESTAMP)
-    @CreationTimestamp
-    @Column(name = "insert_time")
-    private Date insertTime;
+    	@CreationTimestamp
+    	@Column(name = "insert_time")
+    	private Date insertTime;
 }
