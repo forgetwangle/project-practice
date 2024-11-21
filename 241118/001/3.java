@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +55,16 @@ public class ChargingSuccessController {
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode rootNode = objectMapper.readTree(response.getBody());
                 double backendSuccessRate = rootNode.path("data").path("items").get(0).path("backendSuccessRate").asDouble();
-
+                
+                BigDecimal bigDecimal = BigDecimal.valueOf(backendSuccessRate).multiply(BigDecimal.valueOf(100));
+                bigDecimal = bigDecimal.setScale(2, RoundingMode.HALF_UP);
+                double formattedBackendSuccessRate = bigDecimal.doubleValue();
+                
+                // 创建并保存 ChargingSuccess 对象
+                ChargingSuccess chargingSuccess = new ChargingSuccess();
+                chargingSuccess.setBackendSuccessRate(formattedBackendSuccessRate);
+                chargingSuccessMapper.save(chargingSuccess);
+                
                 return "Extracted Backend Success Rate: " + backendSuccessRate;
             } catch (Exception e) {
                 return "Failed to parse JSON response: " + e.getMessage();
