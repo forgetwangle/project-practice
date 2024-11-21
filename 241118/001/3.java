@@ -59,7 +59,9 @@ public class ChargingSuccessController {
                 BigDecimal bigDecimal = BigDecimal.valueOf(backendSuccessRate).multiply(BigDecimal.valueOf(100));
                 bigDecimal = bigDecimal.setScale(2, RoundingMode.HALF_UP);
                 double formattedBackendSuccessRate = bigDecimal.doubleValue();
-                
+
+		String backendSuccessRatePercent = String.format("%.2f%%", backendSuccessRate * 100);
+		    
                 // 创建并保存 ChargingSuccess 对象
                 ChargingSuccess chargingSuccess = new ChargingSuccess();
                 chargingSuccess.setBackendSuccessRate(formattedBackendSuccessRate);
